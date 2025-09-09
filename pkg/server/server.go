@@ -143,6 +143,7 @@ func (s *Server) Start() {
 		edv2.HandleFunc("/id/{uuid}/apps/instances/id/{appuuid}/logs", apiv2.appLogs).Methods("POST")
 		edv2.HandleFunc("/id/{uuid}/apps/instanceid/{appuuid}/newlogs", apiv2.newAppLogs).Methods("POST")
 		edv2.HandleFunc("/uuid", apiv2.uuid).Methods("POST")
+		edv2.HandleFunc("/id/{uuid}/hardwarehealth", apiv2.hardwarehealth).Methods("POST")
 	}
 
 	// admin endpoint - custom, used to manage adam
