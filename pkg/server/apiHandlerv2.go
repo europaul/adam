@@ -83,8 +83,8 @@ func (h *apiHandlerv2) recordClient(u *uuid.UUID, r *http.Request) {
 	h.manager.WriteRequest(*u, b)
 }
 
-//validateAuthContainerAndRecord processes http.Request extracts AuthContainer and do its validation
-//against registered devices:
+// validateAuthContainerAndRecord processes http.Request extracts AuthContainer and do its validation
+// against registered devices:
 // checks for certs hash in AuthContainer and go through saved certs to check auth state
 // it verifies Signature of AuthContainer payload against saved cert
 // returns ProtectedPayload and device uuid
@@ -130,7 +130,7 @@ func (h *apiHandlerv2) validateAuthContainerAndRecord(w http.ResponseWriter, r *
 	return payload, u
 }
 
-//getAllCerts process certificates files and return structure with them
+// getAllCerts process certificates files and return structure with them
 func (h *apiHandlerv2) getAllCerts() (map[string]*certs.ZCert, error) {
 	allCerts := make(map[string]*certs.ZCert)
 	signingCerts, sgErr := getCertChain(h.signingCertPath, certs.ZCertType_CERT_TYPE_CONTROLLER_SIGNING)
@@ -671,4 +671,13 @@ func (h *apiHandlerv2) uuid(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add(contentType, mimeProto)
 	w.WriteHeader(http.StatusOK)
 	w.Write(cloudEnvelope)
+}
+
+func (h *apiHandlerv2) hardwarehealth(w http.ResponseWriter, r *http.Request) {
+	_, u := h.validateAuthContainerAndRecord(w, r)
+	if u == nil {
+		return
+	}
+	// For now, just return 200 OK as per requirements
+	w.WriteHeader(http.StatusOK)
 }
